@@ -97,9 +97,10 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
         IF SELF.select_list.COUNT = 0 THEN
             l_sql := l_sql || '*';
         ELSE
-            l_sql := l_sql || LISTAGG(SELF.select_list(i), ', ')
-                WITHIN GROUP (ORDER BY i)
-                OVER ();
+            FOR i IN 1 .. SELF.select_list.COUNT LOOP
+                IF i > 1 THEN l_sql := l_sql || ', '; END IF;
+                l_sql := l_sql || SELF.select_list(i);
+            END LOOP;
         END IF;
 
         ------------------------------------------------------------------
@@ -111,10 +112,11 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
         -- WHERE clauses
         ------------------------------------------------------------------
         IF SELF.where_clauses.COUNT > 0 THEN
-            l_sql := l_sql || ' WHERE ' ||
-                LISTAGG(SELF.where_clauses(i), ' AND ')
-                WITHIN GROUP (ORDER BY i)
-                OVER ();
+            l_sql := l_sql || ' WHERE ';
+            FOR i IN 1 .. SELF.where_clauses.COUNT LOOP
+                IF i > 1 THEN l_sql := l_sql || ' AND '; END IF;
+                l_sql := l_sql || SELF.where_clauses(i);
+            END LOOP;
         END IF;
 
         ------------------------------------------------------------------

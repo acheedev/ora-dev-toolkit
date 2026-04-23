@@ -80,7 +80,7 @@ CREATE OR REPLACE PACKAGE BODY otk$log_json IS
         PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
         DELETE FROM otk_error_log_json
-        WHERE log_timestamp < SYSTIMESTAMP - p_days;
+        WHERE log_timestamp < SYSTIMESTAMP - NUMTODSINTERVAL(p_days, 'DAY');
         COMMIT;
     END;
 

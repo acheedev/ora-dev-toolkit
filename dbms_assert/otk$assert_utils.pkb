@@ -1,19 +1,29 @@
-CREATE OR REPLACE PACKAGE assert_utils IS
+CREATE OR REPLACE PACKAGE BODY otk$assert_utils IS
 
-    -- Validate a simple identifier (column, table, index, constraint)
-    FUNCTION simple_name(p_name VARCHAR2) RETURN VARCHAR2;
+    FUNCTION simple_name(p_name VARCHAR2) RETURN VARCHAR2 IS
+    BEGIN
+        RETURN dbms_assert.simple_sql_name(p_name);
+    END;
 
-    -- Validate a schema-qualified object name (table, view, index, etc.)
-    FUNCTION object_name(p_name VARCHAR2) RETURN VARCHAR2;
+    FUNCTION object_name(p_name VARCHAR2) RETURN VARCHAR2 IS
+    BEGIN
+        RETURN dbms_assert.sql_object_name(p_name);
+    END;
 
-    -- Validate a schema name only
-    FUNCTION schema_name(p_name VARCHAR2) RETURN VARCHAR2;
+    FUNCTION schema_name(p_name VARCHAR2) RETURN VARCHAR2 IS
+    BEGIN
+        RETURN dbms_assert.schema_name(p_name);
+    END;
 
-    -- Validate a literal value (quotes it safely)
-    FUNCTION literal(p_value VARCHAR2) RETURN VARCHAR2;
+    FUNCTION literal(p_value VARCHAR2) RETURN VARCHAR2 IS
+    BEGIN
+        RETURN dbms_assert.enquote_literal(p_value);
+    END;
 
-    -- Quote an identifier (case-sensitive or special chars)
-    FUNCTION enquote(p_name VARCHAR2) RETURN VARCHAR2;
+    FUNCTION enquote(p_name VARCHAR2) RETURN VARCHAR2 IS
+    BEGIN
+        RETURN dbms_assert.enquote_name(p_name);
+    END;
 
-END assert_utils;
+END otk$assert_utils;
 /

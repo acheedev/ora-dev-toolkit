@@ -5,13 +5,13 @@ CREATE OR REPLACE PACKAGE BODY otk$log IS
     ----------------------------------------------------------------------
     FUNCTION ctx(p_key VARCHAR2, p_value VARCHAR2) RETURN CLOB IS
     BEGIN
-        RETURN '{"' || p_key || '":"' || p_value || '"}';
+        RETURN JSON_OBJECT(p_key VALUE p_value RETURNING CLOB);
     END;
 
     FUNCTION ctx_merge(p_ctx1 CLOB, p_ctx2 CLOB) RETURN CLOB IS
     BEGIN
-        IF p_ctx1 IS NULL THEN RETURN p_ctx2; END IF;
-        IF p_ctx2 IS NULL THEN RETURN p_ctx1; END IF;
+        IF p_ctx1 IS NULL OR DBMS_LOB.GETLENGTH(p_ctx1) <= 2 THEN RETURN p_ctx2; END IF;
+        IF p_ctx2 IS NULL OR DBMS_LOB.GETLENGTH(p_ctx2) <= 2 THEN RETURN p_ctx1; END IF;
 
         RETURN SUBSTR(p_ctx1, 1, LENGTH(p_ctx1)-1) ||
                ',' ||
@@ -99,7 +99,7 @@ CREATE OR REPLACE PACKAGE BODY otk$log IS
         PRAGMA AUTONOMOUS_TRANSACTION;
     BEGIN
         DELETE FROM otk_error_log
-        WHERE log_timestamp < SYSTIMESTAMP - p_days;
+        WHERE log_timestamp < SYSTIMESTAMP - NUMTODSINTERVAL(p_days, 'DAY');
         COMMIT;
     END;
 
