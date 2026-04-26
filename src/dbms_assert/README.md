@@ -66,9 +66,10 @@ EXECUTE IMMEDIATE
 ## Files
 
 ```
-otk$assert_utils.pks   -- package specification
-otk$assert_utils.pkb   -- package body
-README.md              -- this file
+src/dbms_assert/
+    otk$assert_utils.pks   -- package specification
+    otk$assert_utils.pkb   -- package body
+    README.md              -- this file
 ```
 
 ---

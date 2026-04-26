@@ -34,27 +34,29 @@ otk$metadata_tables
 
 # **2. Directory Structure**
 
-Each logical module lives in its own directory:
+All modules live under `src/`. Each logical module has its own subdirectory:
 
 ```
-<module>/
-    otk$<module>_<component>.pks
-    otk$<module>_<component>.pkb
-    README.md
+src/
+    <module>/
+        otk$<module>_<component>.pks
+        otk$<module>_<component>.pkb
+        README.md
 ```
 
 Examples:
 
 ```
-dbms_assert/
-    otk$assert_utils.pks
-    otk$assert_utils.pkb
-    README.md
+src/
+    dbms_assert/
+        otk$assert_utils.pks
+        otk$assert_utils.pkb
+        README.md
 
-dynamic_sql/
-    otk$dynamic_sql_builder.pks
-    otk$dynamic_sql_builder.pkb
-    README.md
+    dynamic_sql/
+        otk$dynamic_sql_builder.pks
+        otk$dynamic_sql_builder.pkb
+        README.md
 ```
 
 ---
@@ -150,13 +152,14 @@ Keep them lowercase and descriptive.
 # **8. Example: Full Module Layout**
 
 ```
-dbms_assert/
-    README.md
-    otk$assert_utils.pks
-    otk$assert_utils.pkb
+src/
+    dbms_assert/
+        README.md
+        otk$assert_utils.pks
+        otk$assert_utils.pkb
 
-dynamic_sql/
-    README.md
-    otk$dynamic_sql_builder.pks
-    otk$dynamic_sql_builder.pkb
+    dynamic_sql/
+        README.md
+        otk$dynamic_sql_builder.pks
+        otk$dynamic_sql_builder.pkb
 ```

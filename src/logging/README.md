@@ -116,7 +116,7 @@ Preferred when running on 23ai+.
 ## File Layout
 
 ```
-logging/
+src/logging/
     otk_error_log.sql
     otk_error_log_biu.sql
     otk$log.pks
@@ -129,6 +129,8 @@ logging/
         otk$log_json.pkb
 
     README.md
+
+tests/
     test_log.sql
     test_log_json.sql
 ```

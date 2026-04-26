@@ -101,11 +101,12 @@ FETCH FIRST 10 ROWS ONLY
 ## Files
 
 ```
-otk$ds_query_t_s.sql        -- standalone object type (spec)
-otk$ds_query_t_b.sql        -- object type body (fluent API)
-otk$dynamic_sql_builder.pks -- constructor package spec
-otk$dynamic_sql_builder.pkb -- constructor package body
-README.md                   -- this file
+src/dynamic_sql/
+    otk$ds_query_t_s.sql        -- standalone object type (spec)
+    otk$ds_query_t_b.sql        -- object type body (fluent API)
+    otk$dynamic_sql_builder.pks -- constructor package spec
+    otk$dynamic_sql_builder.pkb -- constructor package body
+    README.md                   -- this file
 ```
 
 ---
