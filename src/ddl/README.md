@@ -147,6 +147,7 @@ END IF;
 
 ```
 src/ddl/
+    build.sql       -- installs this module only
     otk$ddl.pks    -- package spec
     otk$ddl.pkb    -- package body
     README.md      -- this file
@@ -162,9 +163,6 @@ tests/
 Requires `otk$assert_utils` to be installed first.
 
 ```sql
-@src/dbms_assert/otk$assert_utils.pks
-@src/dbms_assert/otk$assert_utils.pkb
-
-@src/ddl/otk$ddl.pks
-@src/ddl/otk$ddl.pkb
+@src/dbms_assert/build.sql
+@src/ddl/build.sql
 ```

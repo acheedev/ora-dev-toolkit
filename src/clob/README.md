@@ -159,6 +159,7 @@ END LOOP;
 
 ```
 src/clob/
+    build.sql       -- installs this module
     otk$clob.pks    -- package spec
     otk$clob.pkb    -- package body
     README.md       -- this file
@@ -174,6 +175,5 @@ tests/
 No dependencies. Can be installed in any order relative to other modules.
 
 ```sql
-@src/clob/otk$clob.pks
-@src/clob/otk$clob.pkb
+@src/clob/build.sql
 ```

@@ -117,12 +117,14 @@ Preferred when running on 23ai+.
 
 ```
 src/logging/
+    build.sql
     otk_error_log.sql
     otk_error_log_biu.sql
     otk$log.pks
     otk$log.pkb
 
     json_native/
+        build.sql
         otk_error_log_json.sql
         otk_error_log_json_biu.sql
         otk$log_json.pks
@@ -197,6 +199,24 @@ otk$log.purge(30); -- delete logs older than 30 days
 | 23ai+          | `otk$log_json`     |
 
 Both can coexist in the same database.
+
+---
+
+## Installation
+
+Classic CLOB logger:
+
+```sql
+@src/logging/build.sql
+```
+
+JSON-native logger for Oracle 23ai or later:
+
+```sql
+@src/logging/json_native/build.sql
+```
+
+Neither logger depends on another toolkit package.
 
 ---
 

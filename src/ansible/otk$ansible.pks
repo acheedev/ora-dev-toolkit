@@ -2,7 +2,7 @@ CREATE OR REPLACE PACKAGE otk$ansible IS
 
     ----------------------------------------------------------------------
     -- Requires Oracle 19c or later.
-    -- Depends on: otk$rest (HTTP calls), otk$json (response parsing)
+    -- Depends on: otk$clob (response snippets), otk$rest (HTTP calls), otk$json (response parsing)
     --
     -- Targets Ansible Tower / AWX REST API v2.
     -- All calls go to the same base URL with the same credentials,

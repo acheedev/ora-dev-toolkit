@@ -5,7 +5,7 @@ The `ansible` module is an Ansible Tower / AWX REST API client built on `otk$res
 It covers the complete job lifecycle: launch → poll → inspect → output → cancel.
 
 **Requires Oracle 19c or later.**
-**Depends on: `otk$rest`, `otk$json`**
+**Depends on: `otk$clob`, `otk$rest`, `otk$json`**
 **Targets: Ansible Tower / AWX REST API v2**
 
 ---
@@ -239,6 +239,7 @@ END;
 
 ```
 src/ansible/
+    build.sql          -- installs this module only
     otk$ansible.pks    -- package spec
     otk$ansible.pkb    -- package body
     README.md          -- this file
@@ -251,18 +252,13 @@ tests/
 
 ## Installation
 
+Install dependencies first, then run the ansible module build script.
+
 ```sql
-@src/clob/otk$clob.pks
-@src/clob/otk$clob.pkb
-
-@src/json/otk$json.pks
-@src/json/otk$json.pkb
-
-@src/rest/otk$rest.pks
-@src/rest/otk$rest.pkb
-
-@src/ansible/otk$ansible.pks
-@src/ansible/otk$ansible.pkb
+@src/clob/build.sql
+@src/json/build.sql
+@src/rest/build.sql
+@src/ansible/build.sql
 ```
 
 Configure the `otk$rest` wallet and ACL first — see `src/rest/setup/README.md`.

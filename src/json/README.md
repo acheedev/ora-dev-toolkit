@@ -193,6 +193,7 @@ otk$log.info(
 
 ```
 src/json/
+    build.sql       -- installs this module
     otk$json.pks    -- package spec
     otk$json.pkb    -- package body
     README.md       -- this file
@@ -205,12 +206,10 @@ tests/
 
 ## Installation
 
-No schema-level types required. Install after `dbms_assert` (no direct dependency,
-but follows toolkit convention).
+No dependencies. Can be installed in any order relative to other modules.
 
 ```sql
-@src/json/otk$json.pks
-@src/json/otk$json.pkb
+@src/json/build.sql
 ```
 
 ---
