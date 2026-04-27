@@ -37,10 +37,10 @@
 @@ansible/otk$ansible.pkb
 
 -- 9. logging — classic CLOB engine (no dependencies)
-@@logging/otk_error_log.sql
-@@logging/otk_error_log_biu.sql
-@@logging/otk$log.pks
-@@logging/otk$log.pkb
+--@@logging/otk_error_log.sql
+--@@logging/otk_error_log_biu.sql
+--@@logging/otk$log.pks
+--@@logging/otk$log.pkb
 
 -- 10. logging — JSON‑native engine (Oracle 23ai+ only)
 @@logging/json_native/otk_error_log_json.sql
