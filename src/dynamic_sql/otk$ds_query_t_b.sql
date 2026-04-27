@@ -74,7 +74,7 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t AS
     ----------------------------------------------------------------------
     -- FETCH FIRST n ROWS ONLY
     ----------------------------------------------------------------------
-
+    MEMBER FUNCTION fetch_first(p_rows INTEGER)
         RETURN otk$ds_query_t
     IS
         l_self otk$ds_query_t := SELF;
