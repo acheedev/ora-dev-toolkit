@@ -2,14 +2,26 @@ CREATE OR REPLACE PACKAGE BODY otk$log_json IS
 
     FUNCTION ctx(p_key VARCHAR2, p_value VARCHAR2) RETURN JSON IS
     BEGIN
-        RETURN JSON_OBJECT(p_key VALUE p_value);
+        RETURN JSON_OBJECT(p_key VALUE p_value RETURNING JSON);
     END;
 
     FUNCTION ctx_merge(p_ctx1 JSON, p_ctx2 JSON) RETURN JSON IS
+        l_obj1 JSON_OBJECT_T;
+        l_obj2 JSON_OBJECT_T;
+        l_keys JSON_KEY_LIST;
     BEGIN
         IF p_ctx1 IS NULL THEN RETURN p_ctx2; END IF;
         IF p_ctx2 IS NULL THEN RETURN p_ctx1; END IF;
-        RETURN p_ctx1 || p_ctx2;
+
+        l_obj1 := JSON_OBJECT_T(p_ctx1);
+        l_obj2 := JSON_OBJECT_T(p_ctx2);
+        l_keys := l_obj2.get_keys;
+
+        FOR i IN 1 .. l_keys.COUNT LOOP
+            l_obj1.put(l_keys(i), l_obj2.get(l_keys(i)));
+        END LOOP;
+
+        RETURN l_obj1.to_json;
     END;
 
     PROCEDURE write_log(
