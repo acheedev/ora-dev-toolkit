@@ -182,7 +182,7 @@ CREATE OR REPLACE PACKAGE BODY otk$json IS
     ----------------------------------------------------------------------
     FUNCTION build_obj(p_key IN VARCHAR2, p_value IN VARCHAR2) RETURN CLOB IS
     BEGIN
-        RETURN JSON_OBJECT(p_key VALUE p_value RETURNING CLOB);
+        RETURN TO_CLOB(JSON_OBJECT(p_key VALUE p_value));
     END build_obj;
 
     FUNCTION merge_obj(p_base IN CLOB, p_overlay IN CLOB) RETURN CLOB IS
