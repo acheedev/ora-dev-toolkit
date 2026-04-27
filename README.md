@@ -11,7 +11,7 @@ This toolkit is built to grow over time — each module is self‑contained, doc
 ## Modules
 
 ### **src/ansible/**
-Ansible Tower / AWX REST API v2 client. Launch job templates, poll for completion, retrieve output, cancel jobs. Timeout and poll interval defaults set once in `configure()`. Depends on `otk$rest` and `otk$json`. Requires Oracle 19c+.
+Ansible Tower / AWX REST API v2 client. Launch job templates, poll for completion, retrieve output, cancel jobs. Timeout and poll interval defaults set once in `configure()`. Depends on `otk$clob`, `otk$rest`, and `otk$json`. Requires Oracle 19c+.
 
 ➡️ [View the ansible module](./src/ansible/README.md)
 
@@ -87,86 +87,77 @@ To install all modules at once in the correct dependency order:
 @src/build.sql
 ```
 
-### Manual Installation
+### Module Installs
 
-Alternatively, follow the detailed steps below to install specific modules:
+Each module directory has a local `build.sql` that installs only that module.
+Install any listed dependencies first.
 
-### 1. dbms_assert (no dependencies — install first)
+### dbms_assert (no dependencies)
 
 ```sql
-@src/dbms_assert/otk$assert_utils.pks
-@src/dbms_assert/otk$assert_utils.pkb
+@src/dbms_assert/build.sql
 ```
 
-### 2. ansible (depends on clob, json, rest)
+### ansible (depends on clob, json, rest)
 
 ```sql
-@src/ansible/otk$ansible.pks
-@src/ansible/otk$ansible.pkb
+@src/clob/build.sql
+@src/json/build.sql
+@src/rest/build.sql
+@src/ansible/build.sql
 ```
 
-### 3. rest (depends on clob — install clob first)
+### rest (depends on clob)
 
 ```sql
-@src/rest/otk$rest.pks
-@src/rest/otk$rest.pkb
+@src/clob/build.sql
+@src/rest/build.sql
 ```
 
 See `src/rest/setup/README.md` for ACL and wallet configuration.
 
-### 3. ddl (depends on dbms_assert)
+### ddl (depends on dbms_assert)
 
 ```sql
-@src/ddl/otk$ddl.pks
-@src/ddl/otk$ddl.pkb
+@src/dbms_assert/build.sql
+@src/ddl/build.sql
 ```
 
-### 3. convert (no dependencies)
+### convert (no dependencies)
 
 ```sql
-@src/convert/otk$convert.pks
-@src/convert/otk$convert.pkb
+@src/convert/build.sql
 ```
 
-### 3. clob (no dependencies)
+### clob (no dependencies)
 
 ```sql
-@src/clob/otk$clob.pks
-@src/clob/otk$clob.pkb
+@src/clob/build.sql
 ```
 
-### 3. json (no dependencies)
+### json (no dependencies)
 
 ```sql
-@src/json/otk$json.pks
-@src/json/otk$json.pkb
+@src/json/build.sql
 ```
 
-### 4. dynamic_sql (depends on dbms_assert)
+### dynamic_sql (depends on dbms_assert)
 
 ```sql
-@src/dynamic_sql/otk$ds_query_t_s.sql
-@src/dynamic_sql/otk$ds_query_t_b.sql
-@src/dynamic_sql/otk$dynamic_sql_builder.pks
-@src/dynamic_sql/otk$dynamic_sql_builder.pkb
+@src/dbms_assert/build.sql
+@src/dynamic_sql/build.sql
 ```
 
-### 5. logging — classic CLOB engine (no dependencies)
+### logging - classic CLOB engine (no dependencies)
 
 ```sql
-@src/logging/otk_error_log.sql
-@src/logging/otk_error_log_biu.sql
-@src/logging/otk$log.pks
-@src/logging/otk$log.pkb
+@src/logging/build.sql
 ```
 
-### 6. logging — JSON‑native engine (Oracle 23ai+ only)
+### logging - JSON-native engine (Oracle 23ai+ only)
 
 ```sql
-@src/logging/json_native/otk_error_log_json.sql
-@src/logging/json_native/otk_error_log_json_biu.sql
-@src/logging/json_native/otk$log_json.pks
-@src/logging/json_native/otk$log_json.pkb
+@src/logging/json_native/build.sql
 ```
 
 ### Required privileges

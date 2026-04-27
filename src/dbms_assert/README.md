@@ -67,9 +67,20 @@ EXECUTE IMMEDIATE
 
 ```
 src/dbms_assert/
+    build.sql              -- installs this module
     otk$assert_utils.pks   -- package specification
     otk$assert_utils.pkb   -- package body
     README.md              -- this file
+```
+
+---
+
+## Installation
+
+No dependencies. Install this first when using modules that validate identifiers.
+
+```sql
+@src/dbms_assert/build.sql
 ```
 
 ---

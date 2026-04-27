@@ -102,11 +102,23 @@ FETCH FIRST 10 ROWS ONLY
 
 ```
 src/dynamic_sql/
+    build.sql                  -- installs this module only
     otk$ds_query_t_s.sql        -- standalone object type (spec)
     otk$ds_query_t_b.sql        -- object type body (fluent API)
     otk$dynamic_sql_builder.pks -- constructor package spec
     otk$dynamic_sql_builder.pkb -- constructor package body
     README.md                   -- this file
+```
+
+---
+
+## Installation
+
+Requires `otk$assert_utils` to be installed first.
+
+```sql
+@src/dbms_assert/build.sql
+@src/dynamic_sql/build.sql
 ```
 
 ---
