@@ -1,9 +1,9 @@
-CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
+CREATE OR REPLACE TYPE BODY otk$ds_query_t AS
 
     ----------------------------------------------------------------------
     -- Add SELECT columns
     ----------------------------------------------------------------------
-    MEMBER FUNCTION select_cols(p_cols SYS.ODCIVARCHAR2LIST)
+    MEMBER FUNCTION select_cols(p_cols IN SYS.ODCIVARCHAR2LIST)
         RETURN otk$ds_query_t
     IS
     BEGIN
@@ -22,7 +22,7 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     ----------------------------------------------------------------------
     -- Set FROM table
     ----------------------------------------------------------------------
-    MEMBER FUNCTION from_table(p_table VARCHAR2)
+    MEMBER FUNCTION from_table(p_table IN VARCHAR2)
         RETURN otk$ds_query_t
     IS
     BEGIN
@@ -35,8 +35,8 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     -- Add WHERE clause + optional bind
     ----------------------------------------------------------------------
     MEMBER FUNCTION where_clause(
-        p_condition VARCHAR2,
-        p_bind      ANYDATA DEFAULT NULL
+        p_condition IN VARCHAR2,
+        p_bind      IN ANYDATA
     ) RETURN otk$ds_query_t
     IS
     BEGIN
@@ -58,7 +58,7 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     ----------------------------------------------------------------------
     -- ORDER BY
     ----------------------------------------------------------------------
-    MEMBER FUNCTION order_by(p_col VARCHAR2)
+    MEMBER FUNCTION order_by(p_col IN VARCHAR2)
         RETURN otk$ds_query_t
     IS
     BEGIN
@@ -70,7 +70,7 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     ----------------------------------------------------------------------
     -- FETCH FIRST n ROWS ONLY
     ----------------------------------------------------------------------
-    MEMBER FUNCTION fetch_first(p_rows PLS_INTEGER)
+    MEMBER FUNCTION fetch_first(p_rows IN PLS_INTEGER)
         RETURN otk$ds_query_t
     IS
     BEGIN
