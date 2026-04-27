@@ -1,3 +1,5 @@
+DROP TABLE otk_error_log_json
+/
 CREATE TABLE otk_error_log_json (
     log_id          NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     log_timestamp   TIMESTAMP DEFAULT SYSTIMESTAMP NOT NULL,
