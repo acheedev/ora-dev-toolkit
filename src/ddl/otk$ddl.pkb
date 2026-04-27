@@ -18,12 +18,15 @@ CREATE OR REPLACE PACKAGE BODY otk$ddl IS
         p_owner IN VARCHAR2 DEFAULT NULL
     ) RETURN BOOLEAN IS
         l_count NUMBER;
+        l_owner VARCHAR2(128);
     BEGIN
+        l_owner := resolve_owner(p_owner);
+
         SELECT COUNT(*) INTO l_count
         FROM   all_objects
         WHERE  object_name = UPPER(p_name)
         AND    object_type = UPPER(p_type)
-        AND    owner       = resolve_owner(p_owner);
+        AND    owner       = l_owner;
         RETURN l_count > 0;
     END object_exists;
 
@@ -62,12 +65,15 @@ CREATE OR REPLACE PACKAGE BODY otk$ddl IS
         p_owner  IN VARCHAR2 DEFAULT NULL
     ) RETURN BOOLEAN IS
         l_count NUMBER;
+        l_owner VARCHAR2(128);
     BEGIN
+        l_owner := resolve_owner(p_owner);
+
         SELECT COUNT(*) INTO l_count
         FROM   all_tab_columns
         WHERE  table_name  = UPPER(p_table)
         AND    column_name = UPPER(p_column)
-        AND    owner       = resolve_owner(p_owner);
+        AND    owner       = l_owner;
         RETURN l_count > 0;
     END column_exists;
 
@@ -77,11 +83,14 @@ CREATE OR REPLACE PACKAGE BODY otk$ddl IS
         p_owner      IN VARCHAR2 DEFAULT NULL
     ) RETURN BOOLEAN IS
         l_count NUMBER;
+        l_owner VARCHAR2(128);
     BEGIN
+        l_owner := resolve_owner(p_owner);
+
         SELECT COUNT(*) INTO l_count
         FROM   all_constraints
         WHERE  constraint_name = UPPER(p_constraint)
-        AND    owner           = resolve_owner(p_owner)
+        AND    owner           = l_owner
         AND    (p_table IS NULL OR table_name = UPPER(p_table));
         RETURN l_count > 0;
     END constraint_exists;
@@ -107,6 +116,7 @@ CREATE OR REPLACE PACKAGE BODY otk$ddl IS
         END IF;
 
         l_ddl := l_ddl || l_name;
+
         EXECUTE IMMEDIATE l_ddl;
     END drop_if_exists;
 

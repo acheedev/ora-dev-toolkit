@@ -9,6 +9,10 @@ business logic.
 **Requires Oracle 19c or later.**
 **Depends on: `otk$clob`** (request body chunking, response body assembly)
 
+**Oracle 23ai compatibility note:** `UTL_HTTP.RESP` does not expose a `content_type`
+component in 23ai. `otk$rest` reads the `Content-Type` response header instead,
+so this package compiles and behaves consistently across supported versions.
+
 ---
 
 ## First-time Setup

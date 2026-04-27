@@ -5,10 +5,13 @@ CREATE OR REPLACE PACKAGE BODY otk$json IS
     ----------------------------------------------------------------------
     FUNCTION extract_node(p_json IN CLOB, p_path IN VARCHAR2) RETURN CLOB IS
         l_result CLOB;
+        l_sql    VARCHAR2(4000);
     BEGIN
-        SELECT JSON_QUERY(p_json, p_path RETURNING CLOB NULL ON ERROR)
-        INTO l_result FROM dual;
+        l_sql := 'SELECT JSON_QUERY(:p_json, ''' || REPLACE(p_path, '''', '''''') || ''' RETURNING CLOB NULL ON ERROR) FROM dual';
+        EXECUTE IMMEDIATE l_sql INTO l_result USING p_json;
         RETURN l_result;
+    EXCEPTION
+        WHEN OTHERS THEN RETURN NULL;
     END extract_node;
 
 
@@ -33,18 +36,24 @@ CREATE OR REPLACE PACKAGE BODY otk$json IS
     ----------------------------------------------------------------------
     FUNCTION get_str(p_json IN CLOB, p_path IN VARCHAR2) RETURN VARCHAR2 IS
         l_result VARCHAR2(32767);
+        l_sql    VARCHAR2(4000);
     BEGIN
-        SELECT JSON_VALUE(p_json, p_path RETURNING VARCHAR2(32767) NULL ON ERROR)
-        INTO l_result FROM dual;
+        l_sql := 'SELECT JSON_VALUE(:p_json, ''' || REPLACE(p_path, '''', '''''') || ''' RETURNING VARCHAR2(32767) NULL ON ERROR) FROM dual';
+        EXECUTE IMMEDIATE l_sql INTO l_result USING p_json;
         RETURN l_result;
+    EXCEPTION
+        WHEN OTHERS THEN RETURN NULL;
     END get_str;
 
     FUNCTION get_num(p_json IN CLOB, p_path IN VARCHAR2) RETURN NUMBER IS
         l_result NUMBER;
+        l_sql    VARCHAR2(4000);
     BEGIN
-        SELECT JSON_VALUE(p_json, p_path RETURNING NUMBER NULL ON ERROR)
-        INTO l_result FROM dual;
+        l_sql := 'SELECT JSON_VALUE(:p_json, ''' || REPLACE(p_path, '''', '''''') || ''' RETURNING NUMBER NULL ON ERROR) FROM dual';
+        EXECUTE IMMEDIATE l_sql INTO l_result USING p_json;
         RETURN l_result;
+    EXCEPTION
+        WHEN OTHERS THEN RETURN NULL;
     END get_num;
 
     FUNCTION get_date(
@@ -61,14 +70,17 @@ CREATE OR REPLACE PACKAGE BODY otk$json IS
 
     FUNCTION get_bool(p_json IN CLOB, p_path IN VARCHAR2) RETURN BOOLEAN IS
         l_str VARCHAR2(10);
+        l_sql VARCHAR2(4000);
     BEGIN
-        SELECT JSON_VALUE(p_json, p_path RETURNING VARCHAR2 NULL ON ERROR)
-        INTO l_str FROM dual;
+        l_sql := 'SELECT JSON_VALUE(:p_json, ''' || REPLACE(p_path, '''', '''''') || ''' RETURNING VARCHAR2 NULL ON ERROR) FROM dual';
+        EXECUTE IMMEDIATE l_sql INTO l_str USING p_json;
         RETURN CASE LOWER(l_str)
             WHEN 'true'  THEN TRUE
             WHEN 'false' THEN FALSE
             ELSE NULL
         END;
+    EXCEPTION
+        WHEN OTHERS THEN RETURN NULL;
     END get_bool;
 
     FUNCTION get_bool_yn(p_json IN CLOB, p_path IN VARCHAR2) RETURN VARCHAR2 IS
@@ -100,10 +112,13 @@ CREATE OR REPLACE PACKAGE BODY otk$json IS
     ----------------------------------------------------------------------
     FUNCTION path_exists(p_json IN CLOB, p_path IN VARCHAR2) RETURN BOOLEAN IS
         l_result VARCHAR2(1);
+        l_sql    VARCHAR2(4000);
     BEGIN
-        SELECT CASE WHEN JSON_EXISTS(p_json, p_path) THEN 'Y' ELSE 'N' END
-        INTO l_result FROM dual;
+        l_sql := 'SELECT CASE WHEN JSON_EXISTS(:p_json, ''' || REPLACE(p_path, '''', '''''') || ''') THEN ''Y'' ELSE ''N'' END FROM dual';
+        EXECUTE IMMEDIATE l_sql INTO l_result USING p_json;
         RETURN l_result = 'Y';
+    EXCEPTION
+        WHEN OTHERS THEN RETURN FALSE;
     END path_exists;
 
 
@@ -140,14 +155,22 @@ CREATE OR REPLACE PACKAGE BODY otk$json IS
         l_idx := TO_CHAR(p_index - 1);   -- convert 1-based to 0-based JSON index
 
         -- Try as object or array first
-        SELECT JSON_QUERY(l_arr, '$[' || l_idx || ']' RETURNING CLOB NULL ON ERROR)
-        INTO l_result FROM dual;
+        BEGIN
+            EXECUTE IMMEDIATE 'SELECT JSON_QUERY(:p_arr, ''$[' || l_idx || ']'' RETURNING CLOB NULL ON ERROR) FROM dual'
+            INTO l_result USING l_arr;
+        EXCEPTION WHEN OTHERS THEN
+            l_result := NULL;
+        END;
 
         -- Fall back to scalar if the element is a primitive value
         IF l_result IS NULL THEN
-            SELECT JSON_VALUE(l_arr, '$[' || l_idx || ']' RETURNING VARCHAR2(32767) NULL ON ERROR)
-            INTO l_scalar FROM dual;
-            l_result := l_scalar;
+            BEGIN
+                EXECUTE IMMEDIATE 'SELECT JSON_VALUE(:p_arr, ''$[' || l_idx || ']'' RETURNING VARCHAR2(32767) NULL ON ERROR) FROM dual'
+                INTO l_scalar USING l_arr;
+                l_result := l_scalar;
+            EXCEPTION WHEN OTHERS THEN
+                l_result := NULL;
+            END;
         END IF;
 
         RETURN l_result;

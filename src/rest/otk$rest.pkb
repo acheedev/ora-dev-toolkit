@@ -68,6 +68,26 @@ CREATE OR REPLACE PACKAGE BODY otk$rest IS
 
 
     ----------------------------------------------------------------------
+    -- Private: read one response header value by name (case-insensitive)
+    ----------------------------------------------------------------------
+    FUNCTION response_header(
+        p_resp IN OUT NOCOPY UTL_HTTP.RESP,
+        p_name IN VARCHAR2
+    ) RETURN VARCHAR2 IS
+        l_name  VARCHAR2(256);
+        l_value VARCHAR2(32767);
+    BEGIN
+        FOR i IN 1 .. UTL_HTTP.GET_HEADER_COUNT(p_resp) LOOP
+            UTL_HTTP.GET_HEADER(p_resp, i, l_name, l_value);
+            IF LOWER(l_name) = LOWER(p_name) THEN
+                RETURN l_value;
+            END IF;
+        END LOOP;
+
+        RETURN NULL;
+    END response_header;
+
+    ----------------------------------------------------------------------
     -- Private: core request executor — all verb functions delegate here
     ----------------------------------------------------------------------
     FUNCTION execute_request(
@@ -127,7 +147,8 @@ CREATE OR REPLACE PACKAGE BODY otk$rest IS
 
         l_response.status_code  := l_resp.status_code;
         l_response.status_text  := l_resp.reason_phrase;
-        l_response.content_type := l_resp.content_type;
+        -- l_response.content_type := UTL_HTTP.get_header(l_resp, 'Content-Type');
+        l_response.content_type := response_header(l_resp, 'Content-Type');
         l_response.body         := read_body(l_resp);
 
         UTL_HTTP.END_RESPONSE(l_resp);

@@ -79,6 +79,18 @@ A fully stateless, production‑grade logging framework with two parallel engine
 
 Objects must be installed in dependency order. Run scripts as the target schema owner.
 
+### Quick Install (All Modules)
+
+To install all modules at once in the correct dependency order:
+
+```sql
+@src/build.sql
+```
+
+### Manual Installation
+
+Alternatively, follow the detailed steps below to install specific modules:
+
 ### 1. dbms_assert (no dependencies — install first)
 
 ```sql
@@ -200,6 +212,7 @@ Each script prints `N passed, N failed` on completion.
 
 ```
 src/
+    build.sql       -- Master build script (installs all modules in order)
     ansible/        -- Ansible Tower/AWX API client (19c+)
     rest/           -- HTTPS REST client (19c+)
         setup/          -- ACL and wallet setup scripts

@@ -6,16 +6,17 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     MEMBER FUNCTION select_cols(p_cols SYS.ODCIVARCHAR2LIST)
         RETURN otk$ds_query_t
     IS
+        l_self otk$ds_query_t := SELF;
     BEGIN
         IF p_cols IS NOT NULL THEN
             FOR i IN 1 .. p_cols.COUNT LOOP
-                SELF.select_list.EXTEND;
-                SELF.select_list(SELF.select_list.COUNT) :=
+                l_self.select_list.EXTEND;
+                l_self.select_list(l_self.select_list.COUNT) :=
                     otk$assert_utils.simple_name(p_cols(i));
             END LOOP;
         END IF;
 
-        RETURN SELF;
+        RETURN l_self;
     END select_cols;
 
 
@@ -25,9 +26,10 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     MEMBER FUNCTION from_table(p_table VARCHAR2)
         RETURN otk$ds_query_t
     IS
+        l_self otk$ds_query_t := SELF;
     BEGIN
-        SELF.table_name := otk$assert_utils.object_name(p_table);
-        RETURN SELF;
+        l_self.table_name := otk$assert_utils.object_name(p_table);
+        RETURN l_self;
     END from_table;
 
 
@@ -39,19 +41,20 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
         p_bind      ANYDATA DEFAULT NULL
     ) RETURN otk$ds_query_t
     IS
+        l_self otk$ds_query_t := SELF;
     BEGIN
         IF p_condition IS NOT NULL THEN
-            SELF.where_clauses.EXTEND;
-            SELF.where_clauses(SELF.where_clauses.COUNT) := p_condition;
+            l_self.where_clauses.EXTEND;
+            l_self.where_clauses(l_self.where_clauses.COUNT) := p_condition;
         END IF;
 
         IF p_bind IS NOT NULL THEN
-            SELF.bind_values.EXTEND;
-            SELF.bind_values(SELF.bind_values.COUNT) :=
+            l_self.bind_values.EXTEND;
+            l_self.bind_values(l_self.bind_values.COUNT) :=
                 ANYDATA.AccessVarchar2(p_bind);
         END IF;
 
-        RETURN SELF;
+        RETURN l_self;
     END where_clause;
 
 
@@ -61,21 +64,23 @@ CREATE OR REPLACE TYPE BODY otk$ds_query_t IS
     MEMBER FUNCTION order_by(p_col VARCHAR2)
         RETURN otk$ds_query_t
     IS
+        l_self otk$ds_query_t := SELF;
     BEGIN
-        SELF.order_by_clause := otk$assert_utils.simple_name(p_col);
-        RETURN SELF;
+        l_self.order_by_clause := otk$assert_utils.simple_name(p_col);
+        RETURN l_self;
     END order_by;
 
 
     ----------------------------------------------------------------------
     -- FETCH FIRST n ROWS ONLY
     ----------------------------------------------------------------------
-    MEMBER FUNCTION fetch_first(p_rows PLS_INTEGER)
+    MEMBER FUNCTION fetch_first(p_rows INTEGER)
         RETURN otk$ds_query_t
     IS
+        l_self otk$ds_query_t := SELF;
     BEGIN
-        SELF.fetch_rows := p_rows;
-        RETURN SELF;
+        l_self.fetch_rows := p_rows;
+        RETURN l_self;
     END fetch_first;
 
 
