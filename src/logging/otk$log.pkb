@@ -5,7 +5,7 @@ CREATE OR REPLACE PACKAGE BODY otk$log IS
     ----------------------------------------------------------------------
     FUNCTION ctx(p_key VARCHAR2, p_value VARCHAR2) RETURN CLOB IS
     BEGIN
-        RETURN JSON_OBJECT(p_key VALUE p_value RETURNING CLOB);
+        RETURN TO_CLOB(JSON_OBJECT(p_key VALUE p_value));
     END;
 
     FUNCTION ctx_merge(p_ctx1 CLOB, p_ctx2 CLOB) RETURN CLOB IS
