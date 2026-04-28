@@ -103,19 +103,13 @@ Use this order when installing modules manually:
 Classic CLOB-backed logger:
 
 ```sql
-@src/logging/otk_error_log.sql
-@src/logging/otk_error_log_biu.sql
-@src/logging/otk$log.pks
-@src/logging/otk$log.pkb
+@src/logging/build.sql
 ```
 
 Oracle 23ai JSON-native logger:
 
 ```sql
-@src/logging/json_native/otk_error_log_json.sql
-@src/logging/json_native/otk_error_log_json_biu.sql
-@src/logging/json_native/otk$log_json.pks
-@src/logging/json_native/otk$log_json.pkb
+@src/logging/json_native/build.sql
 ```
 
 ### Required Privileges

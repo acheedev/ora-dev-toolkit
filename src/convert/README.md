@@ -129,6 +129,7 @@ l_payload := JSON_OBJECT(
 
 ```
 src/convert/
+    build.sql          -- installs this module
     otk$convert.pks    -- package spec
     otk$convert.pkb    -- package body
     README.md          -- this file
@@ -144,6 +145,5 @@ tests/
 No dependencies. Can be installed in any order.
 
 ```sql
-@src/convert/otk$convert.pks
-@src/convert/otk$convert.pkb
+@src/convert/build.sql
 ```

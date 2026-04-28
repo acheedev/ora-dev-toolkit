@@ -207,6 +207,7 @@ END IF;
 
 ```
 src/rest/
+    build.sql       -- installs this module only
     otk$rest.pks    -- package spec
     otk$rest.pkb    -- package body
     README.md       -- this file
@@ -227,11 +228,8 @@ tests/
 Requires `otk$clob` to be installed first.
 
 ```sql
-@src/clob/otk$clob.pks
-@src/clob/otk$clob.pkb
-
-@src/rest/otk$rest.pks
-@src/rest/otk$rest.pkb
+@src/clob/build.sql
+@src/rest/build.sql
 ```
 
 Then follow `src/rest/setup/README.md` to configure the environment.
