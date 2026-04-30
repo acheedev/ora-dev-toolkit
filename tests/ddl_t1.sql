@@ -69,13 +69,17 @@ BEGIN
     --------------------------------------------------------------------------
     -- constraint_exists
     --------------------------------------------------------------------------
-    ok('constraint_exists: PK constraint exists',
-        otk$ddl.constraint_exists('SYS_C%', 'otk_ddl_test_tab') OR
-        -- PK name may be system-generated; test via ALL_CONSTRAINTS directly
-        (SELECT COUNT(*) FROM all_constraints
+    DECLARE
+        l_pk_count PLS_INTEGER;
+    BEGIN
+        SELECT COUNT(*) INTO l_pk_count FROM all_constraints
          WHERE table_name = 'OTK_DDL_TEST_TAB'
          AND   constraint_type = 'P'
-         AND   owner = SYS_CONTEXT('USERENV','CURRENT_SCHEMA')) > 0 = TRUE);
+         AND   owner = SYS_CONTEXT('USERENV','CURRENT_SCHEMA');
+
+        ok('constraint_exists: PK constraint exists',
+            otk$ddl.constraint_exists('SYS_C%', 'otk_ddl_test_tab') OR l_pk_count > 0);
+    END;
 
     ok('constraint_exists: absent constraint',
         otk$ddl.constraint_exists('OTK_NO_SUCH_CONSTRAINT') = FALSE);

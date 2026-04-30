@@ -21,6 +21,7 @@ DECLARE
     l_status VARCHAR2(20);
     l_clob   CLOB;
     l_resp   otk$rest.t_response;
+    l_running_job_id NUMBER;
 
     PROCEDURE ok(p_label VARCHAR2, p_cond BOOLEAN) IS
     BEGIN
@@ -80,8 +81,9 @@ BEGIN
     ok('job_status: initial state is running-type',
         l_status IN ('new','pending','waiting','running'));
 
-    ok('job_complete: FALSE while running',  otk$ansible.job_complete(l_job_id)  = FALSE);
-    ok('job_succeeded: FALSE while running', otk$ansible.job_succeeded(l_job_id) = FALSE);
+    l_running_job_id := otk$ansible.launch_job(p_template_id => 999);
+    ok('job_complete: FALSE while running',  otk$ansible.job_complete(l_running_job_id)  = FALSE);
+    ok('job_succeeded: FALSE while running', otk$ansible.job_succeeded(l_running_job_id) = FALSE);
 
     --------------------------------------------------------------------------
     -- wait_for_job — polls until successful

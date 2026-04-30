@@ -64,8 +64,8 @@ BEGIN
     -- object_name: valid schema-qualified names
     --------------------------------------------------------------------------
     BEGIN
-        l_result := otk$assert_utils.object_name('HR.EMPLOYEES');
-        ok('object_name: schema-qualified name accepted', l_result = 'HR.EMPLOYEES');
+        l_result := otk$assert_utils.object_name('SYS.DUAL');
+        ok('object_name: schema-qualified name accepted', l_result = 'SYS.DUAL');
     EXCEPTION WHEN OTHERS THEN
         ok('object_name: schema-qualified name accepted', FALSE);
     END;

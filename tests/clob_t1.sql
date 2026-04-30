@@ -104,7 +104,7 @@ BEGIN
     --------------------------------------------------------------------------
     l_clob := otk$clob.replace_str(l_text, 'ACTIVE', 'INACTIVE');
     ok('replace_str: replacement applied',   otk$clob.contains(l_clob, 'INACTIVE') = TRUE);
-    ok('replace_str: old value gone',        otk$clob.contains(l_clob, 'ACTIVE')   = FALSE);
+    ok('replace_str: old value gone',        otk$clob.contains(l_clob, 'Status  : ACTIVE') = FALSE);
 
     l_clob := otk$clob.replace_str(l_text, 'MISSING', 'X');
     ok('replace_str: no match = unchanged',  otk$clob.clob_len(l_clob) = otk$clob.clob_len(l_text));
@@ -166,7 +166,7 @@ BEGIN
     l_lines := otk$clob.split_lines(l_text);
     ok('split_lines: correct line count',    l_lines.COUNT = 10);
     ok('split_lines: first line content',    l_lines(1) = 'Module  : order_sync');
-    ok('split_lines: empty line preserved',  l_lines(4) = '');
+    ok('split_lines: empty line preserved',  l_lines(4) IS NULL);
     ok('split_lines: last line no newline',  l_lines(10) = 'Total processed: 4');
     ok('split_lines: CRLF stripped to LF',  INSTR(l_lines(1), CHR(13)) = 0);
     ok('split_lines: NULL = empty list',     otk$clob.split_lines(NULL).COUNT = 0);

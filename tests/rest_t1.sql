@@ -72,9 +72,9 @@ BEGIN
         p_headers => '{"X-Otk-Test":"mock_header_value","X-Correlation-Id":"abc123"}'
     );
     ok('GET headers: X-Otk-Test echoed',
-        otk$json.get_str(l_resp.body, '$.headers.X-Otk-Test') = 'mock_header_value');
+        otk$json.get_str(l_resp.body, '$.headers."X-Otk-Test"') = 'mock_header_value');
     ok('GET headers: X-Correlation-Id echoed',
-        otk$json.get_str(l_resp.body, '$.headers.X-Correlation-Id') = 'abc123');
+        otk$json.get_str(l_resp.body, '$.headers."X-Correlation-Id"') = 'abc123');
 
     --------------------------------------------------------------------------
     -- GET with Bearer auth

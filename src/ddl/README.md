@@ -8,6 +8,9 @@ It eliminates the boilerplate of checking `ALL_OBJECTS` before every `DROP` and 
 **Compatible with Oracle 12c and later.**
 **Depends on: `otk$assert_utils`** (identifier validation before DDL string assembly)
 
+`otk$ddl` is an invoker-rights package (`AUTHID CURRENT_USER`), so DDL is
+executed with the privileges of the caller instead of the package owner.
+
 ---
 
 ## API Reference

@@ -122,8 +122,7 @@ BEGIN
 
     -- Scalar elements
     l_clob := otk$json.arr_element(l_json, 2, '$.tags');
-    ok('arr_element: scalar element',          l_clob = 'fragile');
-
+    ok('arr_element: scalar element',          TRIM('"' FROM l_clob) = 'fragile');
     ok('arr_element: out of bounds = NULL',
         otk$json.arr_element(l_json, 99, '$.items') IS NULL);
 

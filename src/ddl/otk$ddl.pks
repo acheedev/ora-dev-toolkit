@@ -1,7 +1,8 @@
-CREATE OR REPLACE PACKAGE otk$ddl IS
+CREATE OR REPLACE PACKAGE otk$ddl AUTHID CURRENT_USER IS
 
     ----------------------------------------------------------------------
     -- Compatible with Oracle 12c and later.
+    -- Invoker-rights so DDL runs with the privileges of the calling user.
     -- Depends on: otk$assert_utils (identifier validation for DDL execution)
     ----------------------------------------------------------------------
 

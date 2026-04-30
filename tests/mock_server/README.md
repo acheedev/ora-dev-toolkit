@@ -31,6 +31,12 @@ pip install -r requirements.txt
 @tests/mock_server/setup_test_acl.sql MY_APP_SCHEMA 8765
 ```
 
+For the default local test port, you can also use:
+
+```sql
+@tests/mock_server/setup_localhost_8765_acl.sql MY_APP_SCHEMA
+```
+
 ---
 
 ## Running the tests
